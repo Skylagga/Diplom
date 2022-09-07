@@ -15,12 +15,12 @@ public class OrderPage {
         heading.shouldBe(Condition.visible);
     }
 
-    public static PaymentPage goToPayment() {
+    public  PaymentPage goToPayment() {
         paymentButton.click();
         return new PaymentPage();
     }
 
-    public static CreditPage goToCredit() {
+    public  CreditPage goToCredit() {
         creditButton.click();
         return new CreditPage();
     }

@@ -5,12 +5,16 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
 import ru.netology.data.DbHelper;
+import ru.netology.page.CreditPage;
 import ru.netology.page.OrderPage;
+import ru.netology.page.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreditTests {
+
+    public static OrderPage OrderPage;
 
     @BeforeAll
     static void setUpAll() {
@@ -20,6 +24,7 @@ public class CreditTests {
     @BeforeEach
     void setUp() {
         open("http://localhost:8080/");
+        OrderPage = new OrderPage();
     }
 
     @AfterAll
@@ -117,4 +122,38 @@ public class CreditTests {
         paymentPage.emptyField();
     }
 
+    @Test
+    void shouldGetNoticeWith0InNumberCard() {
+        var cardInfo = DataHelper.getInvalidFormatCardInfo("0000 0000 0000 0000");
+        var paymentPage = OrderPage.goToCredit();
+        paymentPage.credit(cardInfo);
+        paymentPage.wrongNumberCard();
+    }
+
+    @Test
+    void shouldGetNoticeWith0InMonth() {
+        var cardInfo = DataHelper.getInvalidMonthZeroCardInfo("approved");
+        var paymentPage = OrderPage.goToCredit();
+        paymentPage.credit(cardInfo);
+        paymentPage.wrongMonth();
+    }
+
+    @Test
+    void shouldGetNoticeWith0InYear() {
+        var cardInfo = DataHelper.getInvalidYearZeroCardInfo("approved");
+        var paymentPage = OrderPage.goToCredit();
+        paymentPage.credit(cardInfo);
+        paymentPage.wrongYear();
+    }
+
+    @Test
+    void shouldGetNoticeWith0InCVC() {
+        var cardInfo = DataHelper.getInvalidCVCZeroCardInfo("approved");
+        var paymentPage = OrderPage.goToCredit();
+        paymentPage.credit(cardInfo);
+        paymentPage.wrongCVC();
+    }
 }
+
+
+
